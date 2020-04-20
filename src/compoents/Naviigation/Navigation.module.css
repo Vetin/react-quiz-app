@@ -47,3 +47,6 @@
 .menuClose {
   transform: translateX(-150px);
 }
+.active {
+  color: red;
+}

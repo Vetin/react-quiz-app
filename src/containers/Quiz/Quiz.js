@@ -35,7 +35,7 @@ class Quiz extends React.Component {
         isError: true,
       });
       setTimeout(() => this.setState({ isError: false }), 3000);
-      return;
+      return 'error';
     }
     const quiz = this.state.quiz;
     const current = this.state.currentQuestion;

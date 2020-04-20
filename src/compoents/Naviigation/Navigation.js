@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import classes from './Navigation.module.css';
+import { NavLink } from 'react-router-dom';
 
 export default () => {
   const [isOpen, toggleChange] = useState(false);
@@ -7,7 +8,14 @@ export default () => {
   const toggleHandler = () => {
     toggleChange(!isOpen);
   };
-
+  const closeMenuHandler = () => {
+    toggleChange(false);
+  };
+  const links = [
+    { to: '/', label: 'Quizes', exact: true },
+    { to: '/auth', label: 'Login', exact: true },
+    { to: '/create', label: 'Create quiz', exact: true },
+  ];
   const toggleCls = [classes.btnMenu, 'fa'];
   const menuCls = [classes.menu];
   if (isOpen) {
@@ -17,20 +25,26 @@ export default () => {
     toggleCls.push('fa-bars');
     menuCls.push(classes.menuClose);
   }
+  const RenderLinks = () => {
+    return links.map((link, index) => {
+      return (
+        <li key={index}>
+          <NavLink
+            to={link.to}
+            exact={link.exact}
+            activeClassName={classes.acitve}
+            onClick={closeMenuHandler}
+          >
+            {link.label}
+          </NavLink>
+        </li>
+      );
+    });
+  };
+
   const Menu = (props) => (
     <ul className={props.class}>
-      <li>
-        <a href="">a</a>
-      </li>
-      <li>
-        <a href="">bars</a>
-      </li>
-      <li>
-        <a href="">ca</a>
-      </li>
-      <li>
-        <a href="">d</a>
-      </li>
+      <RenderLinks />
     </ul>
   );
   return (

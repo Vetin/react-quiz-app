@@ -1,5 +1,6 @@
 import React from 'react';
 import classes from './FinishedQuiz.module.css';
+import { Link } from 'react-router-dom';
 
 export default (props) => (
   <div className={classes.Finished}>
@@ -11,6 +12,9 @@ export default (props) => (
       <button className={classes.Button} onClick={props.btnHandler}>
         Play again
       </button>
+      <Link to="/">
+        <button className={classes.Button}>Choose another test</button>
+      </Link>
     </div>
   </div>
 );

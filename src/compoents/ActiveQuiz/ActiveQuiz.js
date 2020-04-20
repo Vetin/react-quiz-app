@@ -14,13 +14,20 @@ class ActiveQuiz extends React.Component {
     this.setState({ currentAnswer });
   }
 
+  sendAnswer() {
+    const response = this.props.btnHandler(this.state.currentAnswer);
+    if (response !== 'error') {
+      this.setState({ currentAnswer: '' });
+    }
+  }
+
   render() {
     const error = <p className={classes.error}>You should choose ansert</p>;
     const answers = this.props.quiz.answers.map((answer, index) => (
       <Answer
         changeAnswer={() => this.changeAnswer(this.props.quiz.answers[index])}
         currentAnswer={this.state.currentAnswer}
-        answer={this.props.quiz.answers[index]}
+        answer={answer}
         index={index + 1}
         key={index}
       />
@@ -34,10 +41,7 @@ class ActiveQuiz extends React.Component {
         {this.props.isError ? error : null}
         <ul>{answers}</ul>
         <div className={classes.btnRow}>
-          <button
-            onClick={() => this.props.btnHandler(this.state.currentAnswer)}
-            className={classes.Button}
-          >
+          <button onClick={() => this.sendAnswer()} className={classes.Button}>
             Ответить
           </button>
         </div>
