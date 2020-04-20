@@ -1,0 +1,37 @@
+.Create {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  width: 100%;
+  color: rgb(240, 211, 240);
+  background: linear-gradient(270deg, #f0613c 0%, #f0783c 100%);
+}
+
+.selectGroup select {
+  margin: 20px 0;
+  display: block;
+  box-sizing: border-box;
+  outline: none;
+  border: 2px solid #6c7b9c;
+  border-radius: 6.6%;
+  padding: 7px;
+  width: 100%;
+}
+.selectGroup h3 {
+  margin: 5px 0;
+}
+
+.btnRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.btnRow button {
+  border-radius: 13.3%;
+  outline: none;
+  border: transparent;
+  padding: 6px;
+  color: #fff;
+  background: #59bfef;
+}

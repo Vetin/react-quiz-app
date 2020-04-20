@@ -1,0 +1,33 @@
+.Auth {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+  padding-top: 100px;
+  width: 100%;
+  background: linear-gradient(270deg, #cef2fa 0%, #59bfef 100%);
+}
+.btnRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.btnRow button {
+  border-radius: 13.3%;
+  outline: none;
+  border: transparent;
+  padding: 10px;
+  color: #fff;
+  background: #59bfef;
+}
+
+.Auth h1 {
+  text-align: center;
+  color: #fff;
+}
+.AuthForm {
+  background: #eee;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+  padding: 40px;
+  border-radius: 5px;
+}
+

@@ -41,6 +41,7 @@ class Quiz extends React.Component {
     const current = this.state.currentQuestion;
     const answerIndex = quiz[current].answers.findIndex((el) => el === answer);
 
+    // eslint-disable-next-line eqeqeq
     if (quiz[current].correctAnswer == answerIndex) {
       this.setState({
         points: this.state.points + 1,
