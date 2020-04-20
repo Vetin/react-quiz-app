@@ -1,0 +1,33 @@
+.ActiveQuiz {
+  border: 2px solid #fff;
+  border-radius: 3.3%;
+  width: 450px;
+}
+.ActiveQuiz h3 {
+  text-align: center;
+  color: #fff;
+}
+.Button {
+  padding: 5px;
+  border-radius: 13.3%;
+  border: none;
+  display: flex;
+  margin: 0 10px 10px 0;
+}
+.btnRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.error {
+  text-align: center;
+  color: red;
+}
+.count {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 15px;
+  height: 10px;
+  color: #fff;
+}

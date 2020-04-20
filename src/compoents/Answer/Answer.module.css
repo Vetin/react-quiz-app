@@ -1,0 +1,14 @@
+li {
+  display: flex;
+  margin: 5px;
+  width: fit-content;
+  height: 30px;
+  cursor: pointer;
+}
+
+span {
+  margin-left: 5px;
+}
+.currentAnswer {
+  color: #fff;
+}

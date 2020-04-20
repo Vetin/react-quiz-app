@@ -1,0 +1,49 @@
+.btnMenu {
+  position: fixed;
+  top: 40px;
+  left: 40px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.22s ease-in;
+  z-index: 100;
+  color: #fff;
+}
+.btnMenu:hover {
+  opacity: 0.7;
+}
+.open {
+  left: 160px;
+}
+.menu {
+  margin-top: 0;
+  padding-top: 10px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  bottom: 0;
+  width: 80%;
+  max-width: 150px;
+  box-sizing: border-box;
+  background: #fff;
+  transform: translateX(0px);
+  z-index: 90;
+}
+.menu li {
+  margin-bottom: 15px;
+}
+.menu li a {
+  color: #363d53;
+  font-size: 20px;
+  text-decoration: none;
+  background-color: #fff;
+  position: relative;
+  transition: opacity 0.3s;
+}
+.menu li a:hover,
+.active {
+  opacity: 0.7;
+}
+.menuClose {
+  transform: translateX(-150px);
+}
