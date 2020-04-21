@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classes from './CreateQuiz.module.css';
 import Input from '../../compoents/UI/Input';
+import axios from 'redaxios';
 
 export default class CreteQuiz extends Component {
   state = {
@@ -39,12 +40,23 @@ export default class CreteQuiz extends Component {
     });
   };
 
+  renderCorrectOptions = () => {
+    return this.state.quiz[this.state.currentQuestionIdx].answers.map(
+      (answer, idx) => {
+        return (
+          <option value={idx} key={idx}>
+            Correct answer: {idx + 1}
+          </option>
+        );
+      }
+    );
+  };
+
   onChange(e, idx) {
     const quiz = [...this.state.quiz];
     const name = e.target.name;
     const curIdx = this.state.currentQuestionIdx;
     if (name === 'answers') {
-      console.log(e.target);
       quiz[curIdx].answers[idx] = e.target.value;
     } else {
       quiz[curIdx][e.target.name] = e.target.value;
@@ -62,9 +74,25 @@ export default class CreteQuiz extends Component {
     this.setState({ quiz });
   };
 
-  submitHandler = (e) => {
+  submitHandler = async (e) => {
     e.preventDefault();
-    console.log('test');
+    try {
+      await axios.post(
+        'https://react-quizapp-788ae.firebaseio.com/quizes.json',
+        this.state.quiz
+      );
+      const quiz = [
+        {
+          question: '',
+          answers: ['', '', '', ''],
+          correctAnswer: '',
+        },
+      ];
+      this.setState({ quiz, currentQuestionIdx: 0 });
+      console.log(this.state);
+    } catch (error) {
+      console.log(error);
+    }
   };
   render() {
     return (
@@ -72,7 +100,7 @@ export default class CreteQuiz extends Component {
         <div>
           <h1>Create quiz!</h1>
 
-          <form onSubmit={this.submitHandler}>
+          <form onSubmit={(e) => this.submitHandler(e)} ref={this.form}>
             <h3>Question</h3>
             <Input
               required="required"
@@ -83,16 +111,16 @@ export default class CreteQuiz extends Component {
             />
             <h3>Answers</h3>
             {this.renderInputs()}
-            <h3>Correct answer</h3>
-            <Input
-              required
-              placeholder="Correct answer"
-              name="correctAnswer"
-              value={
-                this.state.quiz[this.state.currentQuestionIdx].correctAnswer
-              }
-              onChange={(e) => this.onChange(e)}
-            />
+            <div className={classes.selectGroup}>
+              <h3>Choose correct answer</h3>
+              <select
+                required
+                name="correctAnswer"
+                onChange={(e) => this.onChange(e)}
+              >
+                {this.renderCorrectOptions()}
+              </select>
+            </div>
             <div className={classes.selectGroup}>
               <h3>Choose question</h3>
               <select
@@ -105,7 +133,7 @@ export default class CreteQuiz extends Component {
               </select>
             </div>
             <div className={classes.btnRow}>
-              <button onClick={() => this.addQuestionHandler()}>
+              <button type="button" onClick={() => this.addQuestionHandler()}>
                 Add question
               </button>
               <button type="submit">Create quiz</button>

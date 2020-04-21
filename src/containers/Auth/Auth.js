@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import classes from './Auth.module.css';
 import Input from '../../compoents/UI/Input';
+import axios from 'redaxios';
 export default class Auth extends Component {
   state = {
     form: {
-      login: '',
+      email: '',
       password: '',
     },
     formError: {
-      login: {
+      email: {
         text: '',
         isValid: false,
       },
@@ -46,18 +47,44 @@ export default class Auth extends Component {
     this.setState({ formError });
   }
 
-  loginHandler() {
+  async loginHandler() {
     const validArr = [];
     Object.values(this.state.formError).forEach((el) =>
       validArr.push(el.isValid)
     );
     if (validArr.every((el) => el === true)) {
-      console.log('nice');
+      try {
+        const { email, password } = this.state.form;
+        const data = {
+          email,
+          password,
+        };
+        const resp = await axios.post(
+          'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDyPVaUxC29xMukG6bt2RJZC71mkReIQdY',
+          data
+        );
+        console.log(resp.data);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
-  authHandler(e) {
-    console.log('auth');
+  async authHandler() {
+    try {
+      const { email, password } = this.state.form;
+      const data = {
+        email,
+        password,
+      };
+      const resp = await axios.post(
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDyPVaUxC29xMukG6bt2RJZC71mkReIQdY',
+        data
+      );
+      console.log(resp.data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   render() {
@@ -68,11 +95,11 @@ export default class Auth extends Component {
 
           <form className={classes.AuthForm}>
             <Input
-              placeholder="Login"
+              placeholder="Email"
               onChange={(e) => this.changeInput(e)}
-              value={this.state.form.login}
-              name="login"
-              error={this.state.formError.login.text}
+              value={this.state.form.email}
+              name="email"
+              error={this.state.formError.email.text}
               errorHandler={(type) => this.errorHandler(type)}
               emitError={(type) => this.emitError(type)}
               validField={(type) => this.changeToValid(type)}
@@ -82,6 +109,7 @@ export default class Auth extends Component {
               onChange={(e) => this.changeInput(e)}
               value={this.state.form.password}
               name="password"
+              type="password"
               error={this.state.formError.password.text}
               errorHandler={(type) => this.errorHandler(type)}
               emitError={(type) => this.emitError(type)}
@@ -89,7 +117,7 @@ export default class Auth extends Component {
             />
 
             <div className={classes.btnRow}>
-              <button type="button" onClick={this.authHandler}>
+              <button type="button" onClick={this.authHandler.bind(this)}>
                 Sign up
               </button>
               <button type="button" onClick={this.loginHandler.bind(this)}>
