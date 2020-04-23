@@ -1,43 +1,31 @@
 import React from 'react';
 import classes from './Quiz.module.css';
-import { axios } from '../../axios/axios.config';
 import ActiveQuiz from '../../compoents/ActiveQuiz/ActiveQuiz';
 import FinishedQuiz from '../../compoents/FinishedQuiz/FinishedQuiz';
 import Loader from '../../compoents/UI/Loader';
+import { connect } from 'react-redux';
+import {
+  fetchQuizById,
+  updatePoints,
+  updateCurrentQuestion,
+  finishQuiz,
+  restartQuiz,
+} from '../../redux/actions/quiz';
 class Quiz extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      quiz: [
-        {
-          question: 'Question',
-          answers: ['a', 'b', 'c', 'd'],
-          correctAnswer: 1,
-        },
-        {
-          question: 'Question 2',
-          answers: ['e', 'f', 'g', 'h'],
-          correctAnswer: 2,
-        },
-        {
-          question: 'Question 3',
-          answers: ['i', 'j', 'k', 'l'],
-          correctAnswer: 3,
-        },
-      ],
       isError: false,
-      isFinish: false,
-      currentQuestion: 0,
-      points: 0,
-      loading: true,
     };
+  }
+
+  componentWillUnmount() {
+    this.props.restartQuiz();
   }
 
   async componentDidMount() {
     const id = this.props.match.params.id;
-    const resp = await axios.get(`/quizes/${id}.json`);
-    const quiz = resp.data;
-    this.setState({ quiz, loading: false });
+    await this.props.fetchQuizById(id);
   }
 
   btnAnswerHandler = (answer) => {
@@ -48,53 +36,43 @@ class Quiz extends React.Component {
       setTimeout(() => this.setState({ isError: false }), 3000);
       return 'error';
     }
-    const quiz = this.state.quiz;
-    const current = this.state.currentQuestion;
+    const quiz = this.props.quiz;
+    const current = this.props.currentQuestion;
     const answerIndex = quiz[current].answers.findIndex((el) => el === answer);
 
     // eslint-disable-next-line eqeqeq
     if (quiz[current].correctAnswer == answerIndex) {
-      this.setState({
-        points: this.state.points + 1,
-      });
+      this.props.updatePoints();
     }
-    if (this.state.quiz.length - 1 === this.state.currentQuestion) {
-      this.setState({
-        isFinish: true,
-      });
+    if (this.props.quiz.length - 1 === this.props.currentQuestion) {
+      this.props.finishQuis();
     } else {
-      this.setState({
-        currentQuestion: this.state.currentQuestion + 1,
-      });
+      this.props.updateCurrentQuestion();
     }
   };
 
   restartQuiz = () => {
-    this.setState({
-      isFinish: false,
-      currentQuestion: 0,
-      points: 0,
-      isError: false,
-    });
+    console.log(this.props.isFinish);
+    this.props.restartQuiz();
   };
 
   render() {
     return (
       <div className={classes.Quiz}>
-        {this.state.loading ? (
+        {this.props.loading ? (
           <Loader />
-        ) : !this.state.isFinish ? (
+        ) : !this.props.isFinish && this.props.quiz.length > 0? (
           <ActiveQuiz
-            currentQuestion={this.state.currentQuestion + 1}
+            currentQuestion={this.props.currentQuestion + 1}
             btnHandler={(answer) => this.btnAnswerHandler(answer)}
-            quiz={this.state.quiz[this.state.currentQuestion]}
+            quiz={this.props.quiz[this.props.currentQuestion]}
             isError={this.state.isError}
-            quizLen={this.state.quiz.length}
+            quizLen={this.props.quiz.length}
           />
         ) : (
           <FinishedQuiz
-            points={this.state.points}
-            totalQues={this.state.quiz.length}
+            points={this.props.points}
+            totalQues={this.props.quiz.length}
             btnHandler={this.restartQuiz}
           />
         )}
@@ -103,4 +81,21 @@ class Quiz extends React.Component {
   }
 }
 
-export default Quiz;
+const mapStateToProps = (state) => ({
+  quiz: state.quiz.quiz,
+  isFinish: state.quiz.isFinish,
+  currentQuestion: state.quiz.currentQuestion,
+  points: state.quiz.points,
+  loading: state.quiz.loading,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchQuizById: (id) => dispatch(fetchQuizById(id)),
+  updatePoints: () => dispatch(updatePoints()),
+  updateCurrentQuestion: () => dispatch(updateCurrentQuestion()),
+  finishQuis: () => dispatch(finishQuiz()),
+  restartQuiz: () => dispatch(restartQuiz()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Quiz);
+
