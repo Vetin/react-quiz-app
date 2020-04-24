@@ -69,7 +69,10 @@ export const updateCurrentQuestion = () => ({
   type: UPDATE_CURRENT_QUESTION,
 });
 
-export const fetchQuizSuccess = (quiz) => ({
-  type: FETCH_QUIZ_SUCCESS,
-  quiz,
-});
+export const fetchQuizSuccess = (quiz) => {
+  console.log(quiz);
+  return {
+    type: FETCH_QUIZ_SUCCESS,
+    quiz,
+  };
+};

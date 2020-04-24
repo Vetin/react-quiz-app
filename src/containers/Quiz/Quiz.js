@@ -23,9 +23,10 @@ class Quiz extends React.Component {
     this.props.restartQuiz();
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const id = this.props.match.params.id;
-    await this.props.fetchQuizById(id);
+    this.props.fetchQuizById(id);
+    console.log(this.props);
   }
 
   btnAnswerHandler = (answer) => {
@@ -52,7 +53,6 @@ class Quiz extends React.Component {
   };
 
   restartQuiz = () => {
-    console.log(this.props.isFinish);
     this.props.restartQuiz();
   };
 
@@ -61,7 +61,7 @@ class Quiz extends React.Component {
       <div className={classes.Quiz}>
         {this.props.loading ? (
           <Loader />
-        ) : !this.props.isFinish && this.props.quiz.length > 0? (
+        ) : !this.props.isFinish && this.props.quiz.length > 0 ? (
           <ActiveQuiz
             currentQuestion={this.props.currentQuestion + 1}
             btnHandler={(answer) => this.btnAnswerHandler(answer)}
@@ -98,4 +98,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Quiz);
-

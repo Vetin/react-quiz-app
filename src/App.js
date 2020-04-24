@@ -14,6 +14,7 @@ function App(props) {
     <Layout>
       <Switch>
         <Route path="/" component={QuizList} exact />
+        <Route path="/quiz/:id" component={Quiz} exact />
         {!props.isAuth ? (
           <Route path="/auth" component={Auth} />
         ) : (
@@ -22,7 +23,6 @@ function App(props) {
             <Route path="/logout" component={Logout} />
           </React.Fragment>
         )}
-        <Route path="/quiz/:id" component={Quiz} />
         <Redirect to={'/'}></Redirect>
       </Switch>
     </Layout>
