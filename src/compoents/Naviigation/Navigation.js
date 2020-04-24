@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import classes from './Navigation.module.css';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-export default () => {
+const Navigation = (props) => {
   const [isOpen, toggleChange] = useState(false);
 
   const toggleHandler = () => {
@@ -13,8 +14,9 @@ export default () => {
   };
   const links = [
     { to: '/', label: 'Quizes', exact: true },
-    { to: '/auth', label: 'Login', exact: true },
-    { to: '/create', label: 'Create quiz', exact: true },
+    props.isAuth
+      ? { to: '/logout', label: 'Logout', exact: true }
+      : { to: '/auth', label: 'Login', exact: true },
   ];
   const toggleCls = [classes.btnMenu, 'fa'];
   const menuCls = [classes.menu];
@@ -26,6 +28,12 @@ export default () => {
     menuCls.push(classes.menuClose);
   }
   const RenderLinks = () => {
+    if (props.isAuth)
+      links.unshift({
+        to: '/create',
+        label: 'Create quiz',
+        exact: true,
+      });
     return links.map((link, index) => {
       return (
         <li key={index}>
@@ -54,3 +62,9 @@ export default () => {
     </div>
   );
 };
+
+const mapPropsToState = (state) => ({
+  isAuth: !!state.auth.token,
+});
+
+export default connect(mapPropsToState)(Navigation);

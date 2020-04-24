@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import classes from './Auth.module.css';
 import Input from '../../compoents/UI/Input';
-import axios from 'redaxios';
-export default class Auth extends Component {
+import { connect } from 'react-redux';
+import { signHandler } from '../../redux/actions/auth';
+import { withRouter } from 'react-router-dom';
+class Auth extends Component {
   state = {
     form: {
       email: '',
@@ -59,11 +61,8 @@ export default class Auth extends Component {
           email,
           password,
         };
-        const resp = await axios.post(
-          'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDyPVaUxC29xMukG6bt2RJZC71mkReIQdY',
-          data
-        );
-        console.log(resp.data);
+        await this.props.signHandler(data, true);
+        this.props.history.push('/');
       } catch (error) {
         console.log(error);
       }
@@ -77,11 +76,8 @@ export default class Auth extends Component {
         email,
         password,
       };
-      const resp = await axios.post(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDyPVaUxC29xMukG6bt2RJZC71mkReIQdY',
-        data
-      );
-      console.log(resp.data);
+      await this.props.signHandler(data, false);
+      this.props.history.push('/');
     } catch (error) {
       console.log(error);
     }
@@ -130,3 +126,9 @@ export default class Auth extends Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  signHandler: (data, isLogin) => dispatch(signHandler(data, isLogin)),
+});
+
+export default withRouter(connect(null, mapDispatchToProps)(Auth));

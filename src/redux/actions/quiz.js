@@ -49,7 +49,7 @@ export const fetchQuizesSuccess = (quizes) => ({
 });
 
 export const fetchQuizesError = (error) => ({
-  type: FETCH_QUIZES_SUCCESS,
+  type: FETCH_QUIZES_ERROR,
   error,
 });
 

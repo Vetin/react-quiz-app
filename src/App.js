@@ -5,19 +5,32 @@ import Quiz from './containers/Quiz/Quiz';
 import Auth from './containers/Auth/Auth';
 import CreateQuiz from './containers/CreateQuiz';
 import QuizList from './containers/QuizList';
-import { Route, Switch } from 'react-router-dom';
+import Logout from './containers/Auth/Logout';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-function App() {
+function App(props) {
   return (
     <Layout>
       <Switch>
         <Route path="/" component={QuizList} exact />
-        <Route path="/auth" component={Auth} />
+        {!props.isAuth ? (
+          <Route path="/auth" component={Auth} />
+        ) : (
+          <React.Fragment>
+            <Route path="/create" component={CreateQuiz} />
+            <Route path="/logout" component={Logout} />
+          </React.Fragment>
+        )}
         <Route path="/quiz/:id" component={Quiz} />
-        <Route path="/create" component={CreateQuiz} />
+        <Redirect to={'/'}></Redirect>
       </Switch>
     </Layout>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  isAuth: !!state.auth.token,
+});
+
+export default connect(mapStateToProps)(App);

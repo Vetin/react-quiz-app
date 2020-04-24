@@ -5,7 +5,6 @@ import {
   UPDATE_CURRENT_QUESTION,
   FINISH_QUIZ,
   UPDATE_POINTS,
-  RESET_QUIZ,
   FETCH_QUIZ_SUCCESS,
   RESTART_QUIZ,
 } from '../../redux/actions/actions.types';
